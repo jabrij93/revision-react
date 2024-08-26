@@ -19,7 +19,8 @@ function App() {
     <div>
       <p>TEST </p>
       <div> Let's implement counter </div>
-      <button onClick={handleClick}> CLICK ME !</button> <button onClick={handleReset}> RESET </button>
+      <button onClick={handleClick}> CLICK ME !</button> 
+      <button onClick={handleReset}> RESET </button>
       <div>{count}</div>
     </div>
   )
