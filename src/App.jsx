@@ -5,37 +5,57 @@ import axios from 'axios';
 import { formatDateTime } from '../helper.js';
 import './App.css'
 
-
-
 function App() {
   const [weatherData, setWeatherData] = useState('');
-  const [timezone, setTimezone] = useState('');
+  const [timezones, setTimezones] = useState([]);
   const [city, setCity] = useState('Kuala_Lumpur')
 
   useEffect(() => {
-    const getAll = async () => {
-      const weatherUrl = `http://worldtimeapi.org/api/timezone/Asia/${city}`
+    // Fetch the list of timezones
+    const fetchTimezones = async () => {
       try {
-        const response = await axios.get(weatherUrl);
-        setWeatherData(response.data);
+        const response = await axios.get('http://worldtimeapi.org/api/timezone');
+        setTimezones(response.data);
       } catch (error) {
-        console.error('Error fetching the data', error);
+        console.error('Error fetching timezones', error);
       }
-    }
-    getAll()
-  }, [city]);
+    };
 
-  console.log("weatherData.data", weatherData)
-  // Extract the city name from the timezone
-  const cityName = weatherData.timezone ? weatherData.timezone.split('/')[1] : '';
+    fetchTimezones();
+  }, []);
+
+  useEffect(() => {
+    if (city) {
+      const matchingTimezone = timezones.find(timezone => timezone.includes(city.replace(' ', '_')));
+      if (matchingTimezone) {
+        const fetchWeatherData = async () => {
+          const weatherUrl = `http://worldtimeapi.org/api/timezone/${matchingTimezone}`;
+          try {
+            const response = await axios.get(weatherUrl);
+            setWeatherData(response.data);
+          } catch (error) {
+            console.error('Error fetching weather data', error);
+          }
+        };
+
+        fetchWeatherData();
+      } else {
+        setWeatherData(null); // Clear weather data if no match is found
+      }
+    } else {
+      setWeatherData(null); // Clear weather data if input is empty
+    }
+  }, [city, timezones]);
+
+  const cityName = weatherData ? weatherData.timezone.split('/').pop().replace('_', ' ') : 'Select a city';
 
   return (
     <div>
-      <p>TEST </p>
+      <p> Time Zone App </p>
 
-      <input placeholder='Set a city' value={city} onChange={event => setCity(event.target.value)} />
+      <input placeholder='Set a city' value={city} onChange={event => setCity(event.target.value)} /> <br/>
      
-      {weatherData && city ? (
+      {weatherData ? (
         <div>
           <div>City: {cityName} </div>
           <div>
@@ -48,8 +68,8 @@ function App() {
       ) : (
         <div>
           <div>City: Select a city</div>
-          <div>Current Date: N/A</div>
-          <div>Current Time: N/A</div>
+          <div>Current Date: </div>
+          <div>Current Time: </div>
         </div>
       )}
     </div>
