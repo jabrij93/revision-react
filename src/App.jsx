@@ -1,28 +1,35 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import axios from 'axios';
 import './App.css'
 
+const weatherUrl = 'http://worldtimeapi.org/api/timezone/Asia/Jakarta';
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [weatherData, setWeatherData] = useState('');
+  const [timezone, setTimezone] = useState('');
 
-  function handleClick() {
-    setCount(count+1)
-    console.log("count", count)
-  }
+  useEffect(() => {
+    const getAll = async () => {
+      try {
+        const response = await axios.get(weatherUrl);
+        setWeatherData(response.data);
+      } catch (error) {
+        console.error('Error fetching the data', error);
+      }
+    }
+    getAll()
+  }, []);
 
-  function handleReset() {
-    setCount(0)
-  }
+  console.log("weatherData.data", weatherData)
 
   return (
     <div>
       <p>TEST </p>
-      <div> Let's implement counter </div>
-      <button onClick={handleClick}> CLICK ME !</button> 
-      <button onClick={handleReset}> RESET </button>
-      <div>{count}</div>
+      
+      <div> {weatherData.timezone} </div>
+      <div> Current : {weatherData.datetime} </div>
     </div>
   )
 }
