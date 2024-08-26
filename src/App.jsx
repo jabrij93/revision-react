@@ -35,19 +35,22 @@ function App() {
 
       <input placeholder='Set a city' value={city} onChange={event => setCity(event.target.value)} />
      
-      {weatherData ? (
-        
+      {weatherData && city ? (
         <div>
           <div>City: {cityName} </div>
           <div>
-            Current Date: {formatDateTime(weatherData.datetime).formattedDate}
+            Current Date: {formatDateTime(weatherData.datetime).formattedDate} 
           </div>
           <div>
             Current Time: {formatDateTime(weatherData.datetime).formattedTime}
           </div>
         </div>
       ) : (
-        <p>Loading...</p>
+        <div>
+          <div>City: Select a city</div>
+          <div>Current Date: N/A</div>
+          <div>Current Time: N/A</div>
+        </div>
       )}
     </div>
   )
