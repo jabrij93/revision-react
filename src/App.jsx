@@ -5,12 +5,15 @@ import axios from 'axios';
 import { formatDateTime } from '../helper.js';
 import './App.css'
 
-
-
 function App() {
   const [weatherData, setWeatherData] = useState('');
   const [timezone, setTimezone] = useState('');
   const [city, setCity] = useState('Kuala_Lumpur')
+
+  // REFERENCE
+  const TIMEZONE_API_KEY = 'YOUR_API_KEY'; // Replace with your Timezonedb API key
+  // https://timezonedb.com/
+
 
   useEffect(() => {
     const getAll = async () => {
