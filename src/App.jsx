@@ -12,7 +12,7 @@ function App() {
 
   // REFERENCE
   const TIMEZONE_API_KEY = 'YOUR_API_KEY'; // Replace with your Timezonedb API key
-  // https://timezonedb.com/
+  https://timezonedb.com/
 
 
   useEffect(() => {
@@ -27,6 +27,8 @@ function App() {
     }
     getAll()
   }, [city]);
+
+  //testt 
 
   console.log("weatherData.data", weatherData)
   // Extract the city name from the timezone
