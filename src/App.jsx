@@ -11,26 +11,26 @@ function App() {
   const [city, setCity] = useState('Kuala_Lumpur')
 
   // REFERENCE
-  const TIMEZONE_API_KEY = 'YOUR_API_KEY'; // Replace with your Timezonedb API key
-  https://timezonedb.com/
-
+  // Accessing the environment variable
+  const apiKey = process.env.TIMEZONE_API_KEY;
 
   useEffect(() => {
     const getAll = async () => {
-      const weatherUrl = `http://worldtimeapi.org/api/timezone/Asia/${city}`
+      const timezoneDB = `http://api.timezonedb.com/v2.1/list-time-zone?key=${apiKey}`
+      // const weatherUrl = `http://worldtimeapi.org/api/timezone/Asia/${city}`
       try {
-        const response = await axios.get(weatherUrl);
-        setWeatherData(response.data);
+        const response = await axios.get(timezoneDB);
+        setTimezone(response.data);
       } catch (error) {
         console.error('Error fetching the data', error);
       }
     }
     getAll()
-  }, [city]);
+  }, []);
 
   //testt 
 
-  console.log("weatherData.data", weatherData)
+  console.log("timezoneDB", timezone)
   // Extract the city name from the timezone
   const cityName = weatherData.timezone ? weatherData.timezone.split('/')[1] : '';
 
