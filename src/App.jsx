@@ -10,44 +10,29 @@ function App() {
   const [timezones, setTimezones] = useState([]);
   const [city, setCity] = useState('Kuala_Lumpur')
 
-  useEffect(() => {
-    // Fetch the list of timezones
-    const fetchTimezones = async () => {
-      try {
-        const response = await axios.get('http://worldtimeapi.org/api/timezone');
-        setTimezones(response.data);
-      } catch (error) {
-        console.error('Error fetching timezones', error);
-      }
-    };
+  // REFERENCE
+  // Accessing the environment variable
+  const apiKey = process.env.TIMEZONE_API_KEY;
 
-    fetchTimezones();
+  useEffect(() => {
+    const getAll = async () => {
+      const timezoneDB = `http://api.timezonedb.com/v2.1/list-time-zone?key=${apiKey}`
+      // const weatherUrl = `http://worldtimeapi.org/api/timezone/Asia/${city}`
+      try {
+        const response = await axios.get(timezoneDB);
+        setTimezone(response.data);
+      } catch (error) {
+        console.error('Error fetching the data', error);
+      }
+    }
+    getAll()
   }, []);
 
-  useEffect(() => {
-    if (city) {
-      const matchingTimezone = timezones.find(timezone => timezone.includes(city.replace(' ', '_')));
-      if (matchingTimezone) {
-        const fetchWeatherData = async () => {
-          const weatherUrl = `http://worldtimeapi.org/api/timezone/${matchingTimezone}`;
-          try {
-            const response = await axios.get(weatherUrl);
-            setWeatherData(response.data);
-          } catch (error) {
-            console.error('Error fetching weather data', error);
-          }
-        };
+  //testt 
 
-        fetchWeatherData();
-      } else {
-        setWeatherData(null); // Clear weather data if no match is found
-      }
-    } else {
-      setWeatherData(null); // Clear weather data if input is empty
-    }
-  }, [city, timezones]);
-
-  const cityName = weatherData ? weatherData.timezone.split('/').pop().replace('_', ' ') : 'Select a city';
+  console.log("timezoneDB", timezone)
+  // Extract the city name from the timezone
+  const cityName = weatherData.timezone ? weatherData.timezone.split('/')[1] : '';
 
   return (
     <div>
