@@ -13,7 +13,7 @@ function App() {
 
   useEffect(() => {
     const getAll = async () => {
-      const timezoneDB = `http://api.timezonedb.com/v2.1/list-time-zone?key=${TIMEZONE_API_KEY}`
+      const timezoneDB = `http://api.timezonedb.com/v2.1/list-time-zone?key=${TIMEZONE_API_KEY}&format=json`
       // const weatherUrl = `http://worldtimeapi.org/api/timezone/Asia/${city}`
       try {
         const response = await axios.get(timezoneDB);
