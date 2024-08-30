@@ -3,6 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import axios from 'axios';
 import { formatDateTime } from '../helper.js';
+import { TIMEZONE_API_KEY } from '../utils/config.js';  // Importing the key from config.js
 import './App.css'
 
 function App() {
@@ -10,17 +11,13 @@ function App() {
   const [timezones, setTimezones] = useState([]);
   const [city, setCity] = useState('Kuala_Lumpur')
 
-  // REFERENCE
-  // Accessing the environment variable
-  const apiKey = process.env.TIMEZONE_API_KEY;
-
   useEffect(() => {
     const getAll = async () => {
-      const timezoneDB = `http://api.timezonedb.com/v2.1/list-time-zone?key=${apiKey}`
+      const timezoneDB = `http://api.timezonedb.com/v2.1/list-time-zone?key=${TIMEZONE_API_KEY}`
       // const weatherUrl = `http://worldtimeapi.org/api/timezone/Asia/${city}`
       try {
         const response = await axios.get(timezoneDB);
-        setTimezone(response.data);
+        setTimezones(response.data);
       } catch (error) {
         console.error('Error fetching the data', error);
       }
@@ -30,7 +27,7 @@ function App() {
 
   //testt 
 
-  console.log("timezoneDB", timezone)
+  console.log("timezoneDB", timezones)
   // Extract the city name from the timezone
   const cityName = weatherData.timezone ? weatherData.timezone.split('/')[1] : '';
 

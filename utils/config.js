@@ -1,8 +1,2 @@
-require('dotenv').config()
-
-
-
-module.exports = {
-  MONGODB_URI,
-  PORT
-}
+// config.js
+export const TIMEZONE_API_KEY='98NBJGO6V2UB'
