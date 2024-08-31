@@ -16,10 +16,14 @@
 // };
 
 export const formatDateTime = (timestamp, gmtOffset) => {
-    const date = new Date((timestamp + gmtOffset) * 1000);
-    
-    const formattedDate = date.toLocaleDateString();
-    const formattedTime = date.toLocaleTimeString();
+  const localTimestamp = (timestamp + gmtOffset) * 1000;
+  
+  // Create a new Date object with the adjusted timestamp
+  const date = new Date(localTimestamp);
+  
+  // Format the date and time
+  const formattedDate = date.toLocaleDateString('en-GB'); // Use en-GB for DD/MM/YYYY format
+  const formattedTime = date.toLocaleTimeString('en-GB'); // Use en-GB to keep time in 24-hour format
   
     return {
       formattedDate,
