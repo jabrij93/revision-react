@@ -29,7 +29,7 @@ function App() {
 
   console.log("timezoneDB.zones", timezones.zones)
   // Extract the city name from the timezone
-  const cityName = weatherData.timezone ? weatherData.timezone.split('/')[1] : '';
+  // const cityName = weatherData.timezone ? weatherData.timezone.split('/')[1] : '';
 
   return (
     <div>
@@ -41,10 +41,10 @@ function App() {
         <div>
           <div>City: {cityName} </div>
           <div>
-            Current Date: {formatDateTime(weatherData.datetime).formattedDate} 
+            Current Date: {formatDateTime(timezones.timestamp).formattedDate} 
           </div>
           <div>
-            Current Time: {formatDateTime(weatherData.datetime).formattedTime}
+            Current Time: {formatDateTime(timezones.gmtOffset).formattedTime}
           </div>
         </div>
       ) : (
