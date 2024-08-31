@@ -9,7 +9,8 @@ import './App.css'
 function App() {
   const [weatherData, setWeatherData] = useState('');
   const [timezones, setTimezones] = useState([]);
-  const [city, setCity] = useState('Kuala_Lumpur')
+  const [city, setCity] = useState('Kuala_Lumpur');
+  const [selectedTimezone, setSelectedTimezone] = useState(null);
 
   useEffect(() => {
     const getAll = async () => {
@@ -25,11 +26,23 @@ function App() {
     getAll()
   }, []);
 
-  //testt 
+  useEffect(() => {
+    if (timezones.zones) {  // Check if zones property exists
+      const findTimezones = timezones.zones;
+      const matchingTimezone = findTimezones.find(zone => 
+        zone.zoneName.toLowerCase().includes(city.toLowerCase())
+      );
+      setSelectedTimezone(matchingTimezone);
+    }
+  }, [city, timezones]);
 
+  
+  //testt 
+  console.log("timezoneDB", timezones)
   console.log("timezoneDB.zones", timezones.zones)
   // Extract the city name from the timezone
   // const cityName = weatherData.timezone ? weatherData.timezone.split('/')[1] : '';
+
 
   return (
     <div>
@@ -37,14 +50,14 @@ function App() {
 
       <input placeholder='Set a city' value={city} onChange={event => setCity(event.target.value)} /> <br/>
      
-      {weatherData ? (
+      {selectedTimezone ? (
         <div>
-          <div>City: {cityName} </div>
+          <div>City: {selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
           <div>
-            Current Date: {formatDateTime(timezones.timestamp).formattedDate} 
+            Current Date: {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).formattedDate} 
           </div>
           <div>
-            Current Time: {formatDateTime(timezones.gmtOffset).formattedTime}
+            Current Time: {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).formattedTime}
           </div>
         </div>
       ) : (
