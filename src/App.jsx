@@ -9,7 +9,7 @@ import './App.css'
 function App() {
   const [weatherData, setWeatherData] = useState('');
   const [timezones, setTimezones] = useState([]);
-  const [city, setCity] = useState('Kuala_Lumpur');
+  const [city, setCity] = useState('Jakarta');
   const [selectedTimezone, setSelectedTimezone] = useState(null);
 
   useEffect(() => {
