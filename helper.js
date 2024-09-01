@@ -17,7 +17,7 @@
 
 export const formatDateTime = (timestamp, gmtOffset) => {
   // Correct the timestamp if it's ahead by a certain number of hours
-  const correctedTimestamp = timestamp - (16 * 3600); // Subtract 16 hours in seconds if necessary
+  const correctedTimestamp = timestamp - (2 * gmtOffset); // Subtract 16 hours in seconds if necessary
 
   // Convert corrected timestamp to milliseconds
   const utcTimestamp = correctedTimestamp * 1000;
