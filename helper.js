@@ -16,18 +16,31 @@
 // };
 
 export const formatDateTime = (timestamp, gmtOffset) => {
-  const localTimestamp = (timestamp + gmtOffset) * 1000;
+  // Convert timestamp to milliseconds if it's in seconds
+
+
+  const utcTimestamp = timestamp * 1000;
+
+  // Calculate the local timestamp by applying the GMT offset
+  const localTimestamp = utcTimestamp + gmtOffset * 1000;
+
   
   // Create a new Date object with the adjusted timestamp
   const date = new Date(localTimestamp);
+
+  console.log('Calculated Local Date:', date.toString());
+
+  console.log('Raw Timestamp:', timestamp);
+  console.log('Raw GMT Offset:', gmtOffset);
   
+
   // Format the date and time
   const formattedDate = date.toLocaleDateString('en-GB'); // Use en-GB for DD/MM/YYYY format
   const formattedTime = date.toLocaleTimeString('en-GB'); // Use en-GB to keep time in 24-hour format
-  
-    return {
-      formattedDate,
-      formattedTime
-    };
+
+  return {
+    formattedDate,
+    formattedTime
+  };
 }
   
