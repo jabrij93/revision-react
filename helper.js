@@ -16,23 +16,16 @@
 // };
 
 export const formatDateTime = (timestamp, gmtOffset) => {
-  // Correct the timestamp if it's ahead by a certain number of hours
-  const correctedTimestamp = timestamp - (2 * gmtOffset); // Subtract 16 hours in seconds if necessary
-  console.log("correctedTimestamp", correctedTimestamp)
-
-  // Convert corrected timestamp to milliseconds
-  const utcTimestamp = correctedTimestamp * 1000;
-
-  // const utcTimestamp = timestamp * 1000;
+  // Convert the timestamp to milliseconds
+  const utcTimestamp = timestamp * 1000;
 
   // Calculate the local timestamp by applying the GMT offset
-  // const localTimestamp = utcTimestamp + gmtOffset * 1000;
+  const localTimestamp = utcTimestamp + gmtOffset * 1000;
 
   // Create a new Date object with the adjusted timestamp
-  const date = new Date(utcTimestamp);
+  const date = new Date(localTimestamp);
 
   console.log('Calculated Local Date:', date.toString());
-
   console.log('Raw Timestamp:', timestamp);
   console.log('Raw GMT Offset:', gmtOffset);
   
