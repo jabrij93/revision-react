@@ -15,27 +15,35 @@ function App() {
   useEffect(() => {
     const getAll = async () => {
       const timezoneDB = `http://api.timezonedb.com/v2.1/list-time-zone?key=${TIMEZONE_API_KEY}&format=json`
-      // const weatherUrl = `http://worldtimeapi.org/api/timezone/Asia/${city}`
       try {
         const response = await axios.get(timezoneDB);
-        setTimezones(response.data);
+        if (response.data && Array.isArray(response.data.zones)) {
+          setTimezones(response.data.zones);
+        } else {
+          console.error('Unexpected data format', response.data);
+        }
       } catch (error) {
         console.error('Error fetching the data', error);
       }
-    }
-    getAll()
+    };
+    getAll();
   }, []);
 
   useEffect(() => {
-    if (timezones.zones) {  // Check if zones property exists
-      const findTimezones = timezones.zones;
-      const matchingTimezone = findTimezones.find(zone => 
-        zone.zoneName.toLowerCase().includes(city.toLowerCase())
-      );
-      setSelectedTimezone(matchingTimezone);
+    if (timezones.length > 0) {
+      const matchingTimezone = timezones.find(zone => {
+        const cityNameFromZone = zone.zoneName.split('/')[1].replace('_', ' ').toLowerCase();
+        return cityNameFromZone.includes(city.toLowerCase());
+      });
+  
+      if (matchingTimezone) {
+        setSelectedTimezone({
+          ...matchingTimezone,
+          timestamp: Math.floor(Date.now() / 1000)  // Use current timestamp
+        });
+      }
     }
   }, [city, timezones]);
-
   
   //testt 
   console.log("timezoneDB", timezones)
