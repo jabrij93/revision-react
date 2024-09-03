@@ -45,12 +45,8 @@ function App() {
     }
   }, [city, timezones]);
   
-  //testt 
   console.log("timezoneDB", timezones)
   console.log("timezoneDB.zones", timezones.zones)
-  // Extract the city name from the timezone
-  // const cityName = weatherData.timezone ? weatherData.timezone.split('/')[1] : '';
-
 
   return (
     <div>
