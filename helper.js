@@ -58,23 +58,48 @@
 //   };
 // }
   
+// export const formatDateTime = (timestamp, gmtOffset) => {
+//   // Convert the timestamp to milliseconds
+//   const utcTimestamp = timestamp * 1000;
+
+//   // Create a new Date object with the UTC timestamp
+//   const date = new Date(utcTimestamp);
+
+//   // Manually apply the GMT offset (in milliseconds)
+//   const localTime = new Date(date.getTime() + gmtOffset * 1000);
+
+//   console.log('Calculated Local Date:', localTime.toString());
+//   console.log('Raw Timestamp:', timestamp);
+//   console.log('Raw GMT Offset:', gmtOffset);
+
+//   // Format the date and time
+//   const formattedDate = localTime.toLocaleDateString('en-GB'); // Use en-GB for DD/MM/YYYY format
+//   const formattedTime = localTime.toLocaleTimeString('en-GB'); // Use en-GB to keep time in 24-hour format
+
+//   return {
+//     formattedDate,
+//     formattedTime
+//   };
+// }
+
 export const formatDateTime = (timestamp, gmtOffset) => {
   // Convert the timestamp to milliseconds
   const utcTimestamp = timestamp * 1000;
 
-  // Calculate the local timestamp by applying the GMT offset
-  const localTimestamp = utcTimestamp - ( gmtOffset * 1000 );
+  // Create a new Date object with the UTC timestamp
+  const date = new Date(utcTimestamp);
+  console.log("date", date)
 
-  // Create a new Date object with the adjusted timestamp
-  const date = new Date(localTimestamp);
+  // Manually apply the GMT offset (in milliseconds)
+  const localTime = new Date(date.getTime() + gmtOffset * 1000);
 
-  console.log('Calculated Local Date:', date.toString());
+  console.log('Calculated Local Date:', localTime.toString());
   console.log('Raw Timestamp:', timestamp);
   console.log('Raw GMT Offset:', gmtOffset);
 
   // Format the date and time
-  const formattedDate = date.toLocaleDateString('en-GB'); // Use en-GB for DD/MM/YYYY format
-  const formattedTime = date.toLocaleTimeString('en-GB'); // Use en-GB to keep time in 24-hour format
+  const formattedDate = localTime.toLocaleDateString('en-GB'); // Use en-GB for DD/MM/YYYY format
+  const formattedTime = localTime.toLocaleTimeString('en-GB'); // Use en-GB to keep time in 24-hour format
   return {
     formattedDate,
     formattedTime
