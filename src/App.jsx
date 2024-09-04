@@ -63,8 +63,8 @@ function App() {
             Current Date: {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).formattedDate} 
           </div>
           <div>
-            Current Time: {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).formattedTime} , <span>GMT {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
-            {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).gmtOffsetInHours}:00 </span>
+            Current Time: {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).formattedTime} (<span>GMT {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
+            {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).gmtOffsetInHours}:00</span>)
           </div>
         </div>
       ) : (
