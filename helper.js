@@ -13,7 +13,6 @@ export const formatDateTime = (timestamp, gmtOffset) => {
   console.log('Calculated Local Date:', localTime.toString());
   console.log('Raw Timestamp:', timestamp);
   console.log('Raw GMT Offset:', gmtOffset);
-  console.log('GMT offset', ((gmtOffset / 60)/60) );
 
   // Calculate GMT offset in hours
   const gmtOffsetInHours = (gmtOffset / 60) / 60;
