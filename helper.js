@@ -13,6 +13,10 @@ export const formatDateTime = (timestamp, gmtOffset) => {
   console.log('Calculated Local Date:', localTime.toString());
   console.log('Raw Timestamp:', timestamp);
   console.log('Raw GMT Offset:', gmtOffset);
+  console.log('GMT offset', ((gmtOffset / 60)/60) );
+
+  // Calculate GMT offset in hours
+  const gmtOffsetInHours = (gmtOffset / 60) / 60;
 
   // Format the date and time
   const formattedDate = localTime.toLocaleDateString('en-GB', { timeZone: 'UTC' });
@@ -20,6 +24,7 @@ export const formatDateTime = (timestamp, gmtOffset) => {
 
   return {
     formattedDate,
-    formattedTime
+    formattedTime,
+    gmtOffsetInHours
   };
 }

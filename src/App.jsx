@@ -35,6 +35,8 @@ function App() {
         const cityNameFromZone = zone.zoneName.split('/')[1].replace('_', ' ').toLowerCase();
         return cityNameFromZone.includes(city.toLowerCase());
       });
+
+      console.log("Matching TIMEZONE", matchingTimezone)
   
       if (matchingTimezone) {
         setSelectedTimezone({
@@ -61,7 +63,8 @@ function App() {
             Current Date: {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).formattedDate} 
           </div>
           <div>
-            Current Time: {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).formattedTime}
+            Current Time: {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).formattedTime} , <span>GMT {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
+            {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).gmtOffsetInHours}:00 </span>
           </div>
         </div>
       ) : (
