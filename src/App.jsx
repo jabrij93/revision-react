@@ -17,7 +17,7 @@ function App() {
       const timezoneDB = `http://api.timezonedb.com/v2.1/list-time-zone?key=${TIMEZONE_API_KEY}&format=json`
       try {
         const response = await axios.get(timezoneDB);
-        if (response.data && Array.isArray(response.data.zones)) {
+        if (response.data?.zones?.length) {
           setTimezones(response.data.zones);
         } else {
           console.error('Unexpected data format', response.data);
