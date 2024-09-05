@@ -57,7 +57,7 @@ function App() {
       <input placeholder='Set a city' value={city} onChange={event => setCity(event.target.value)} /> <br/>
      
       {selectedTimezone ? (
-        <div>
+        <div className='timezone'>
           <div>City: {selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
           <div>
             Current Date: {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).formattedDate} 
@@ -66,12 +66,16 @@ function App() {
             Current Time: {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).formattedTime} (<span>GMT {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
             {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).gmtOffsetInHours}:00</span>)
           </div>
+          <div className='addTimezone'>
+            <button> + </button>
+          </div>
         </div>
       ) : (
         <div>
           <div>City: Select a city</div>
           <div>Current Date: </div>
           <div>Current Time: </div>
+          <div>TEST </div>
         </div>
       )}
     </div>
