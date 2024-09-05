@@ -70,4 +70,14 @@ button:focus-visible {
 .timezone {
   display: flex;
   flex-direction: column;
+  gap: 10px;
+  border: solid;
+}
+
+.addTimezone {
+  display: inline;
+}
+
+.newTimezone {
+  border:solid;
 }

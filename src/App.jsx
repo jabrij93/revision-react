@@ -11,6 +11,9 @@ function App() {
   const [timezones, setTimezones] = useState([]);
   const [city, setCity] = useState('Jakarta');
   const [selectedTimezone, setSelectedTimezone] = useState(null);
+  const [containers, setContainers] = useState([{ city: '' }]);
+
+  
 
   useEffect(() => {
     const getAll = async () => {
@@ -50,35 +53,70 @@ function App() {
   console.log("timezoneDB", timezones)
   console.log("timezoneDB.zones", timezones.zones)
 
+  // const handleAddCity = async (city) => {
+  //     console.log("add city");
+  // }
+
+  const handleAddCity = () => {
+    setContainers([...containers, {}]); // Add a new empty container
+  };
+
+  const handleCityChange = (index, newCity) => {
+    const updatedContainers = [...containers];
+    updatedContainers[index].city = newCity;
+    setContainers(updatedContainers);
+  };
+
   return (
     <div>
       <p> Time Zone App </p>
 
       <input placeholder='Set a city' value={city} onChange={event => setCity(event.target.value)} /> <br/>
-     
+
       {selectedTimezone ? (
-        <div className='timezone'>
-          <div>City: {selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
-          <div>
-            Current Date: {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).formattedDate} 
-          </div>
-          <div>
-            Current Time: {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).formattedTime} (<span>GMT {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
-            {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).gmtOffsetInHours}:00</span>)
-          </div>
+        <div>
+          {containers.map((container, index) => (
+            <div key={index} className='timezone'>
+              <div>City: {selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
+              <div>
+                Current Date: {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).formattedDate}
+              </div>
+              <div>
+                Current Time: {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).formattedTime} 
+                (<span>GMT {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
+                {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).gmtOffsetInHours}:00</span>)
+              </div>
+            </div>
+          ))}
+
           <div className='addTimezone'>
-            <button> + </button>
+            <button onClick={handleAddCity}> + </button>
           </div>
         </div>
       ) : (
         <div>
-          <div>City: Select a city</div>
-          <div>Current Date: </div>
-          <div>Current Time: </div>
-          <div>TEST </div>
+          {containers.map((container, index) => (
+            <div key={index}>
+              <input 
+                placeholder='Set a city' 
+                value={container.city} 
+                onChange={event => handleCityChange(index, event.target.value)} 
+              /> <br/>
+              <div>
+                <div>City: {container.city ? container.city : 'Select a city'}</div>
+                <div>Current Date: </div>
+                <div>Current Time: </div>
+              </div>
+            </div>
+          ))}
+
+          <div className='addTimezone'>
+            <button onClick={handleAddCity}> + </button>
+          </div>
         </div>
       )}
     </div>
+
   )
 }
 
