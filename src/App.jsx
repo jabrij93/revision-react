@@ -17,7 +17,7 @@ function App() {
 
   useEffect(() => {
     const getAll = async () => {
-      const timezoneDB = `http://api.timezonedb.com/v2.1/list-time-zone?key=${TIMEZONE_API_KEY}&format=json`
+      // const timezoneDB = `http://api.timezonedb.com/v2.1/list-time-zone?key=${TIMEZONE_API_KEY}&format=json`
       try {
         const response = await axios.get(timezoneDB);
         if (response.data?.zones?.length) {
@@ -97,11 +97,6 @@ function App() {
         <div>
           {containers.map((container, index) => (
             <div key={index}>
-              <input 
-                placeholder='Set a city' 
-                value={container.city} 
-                onChange={event => handleCityChange(index, event.target.value)} 
-              /> <br/>
               <div>
                 <div>City: {container.city ? container.city : 'Select a city'}</div>
                 <div>Current Date: </div>
