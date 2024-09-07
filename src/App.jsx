@@ -11,13 +11,11 @@ function App() {
   const [timezones, setTimezones] = useState([]);
   const [city, setCity] = useState('Jakarta');
   const [selectedTimezone, setSelectedTimezone] = useState(null);
-  const [containers, setContainers] = useState([{ city: '' }]);
-
-  
+  const [containers, setContainers] = useState([{ city: '', selectedTimezone: null }]); // Updated containers to hold both city and timezone
 
   useEffect(() => {
     const getAll = async () => {
-      // const timezoneDB = `http://api.timezonedb.com/v2.1/list-time-zone?key=${TIMEZONE_API_KEY}&format=json`
+      const timezoneDB = `http://api.timezonedb.com/v2.1/list-time-zone?key=${TIMEZONE_API_KEY}&format=json`
       try {
         const response = await axios.get(timezoneDB);
         if (response.data?.zones?.length) {
@@ -58,43 +56,59 @@ function App() {
   // }
 
   const handleAddCity = () => {
-    setContainers([...containers, {}]); // Add a new empty container
+    setContainers([...containers, { city: '' }]);
   };
 
+  // Handle city change and fetch corresponding timezone data
   const handleCityChange = (index, newCity) => {
     const updatedContainers = [...containers];
     updatedContainers[index].city = newCity;
-    setContainers(updatedContainers);
+
+    // Find matching timezone based on city name
+    const matchingTimezone = timezones.find(zone => {
+      const cityNameFromZone = zone.zoneName.split('/')[1].replace('_', ' ').toLowerCase();
+      return cityNameFromZone.includes(newCity.toLowerCase());
+    });
+
+    if (matchingTimezone) {
+      updatedContainers[index].selectedTimezone = {
+        ...matchingTimezone,
+        timestamp: Math.floor(Date.now() / 1000), // Use current timestamp
+      };
+    } else {
+      updatedContainers[index].selectedTimezone = null; // Clear the timezone if no match
+    }
+
+    setContainers(updatedContainers); // Update containers with the new city and timezone
   };
 
   return (
     <div>
       <p> Time Zone App </p>
 
-      <input placeholder='Set a city' value={city} onChange={event => setCity(event.target.value)} /> <br/>
+      {containers.map((container, index) => (
+        <div key={index} className='timezone'>
+          <input
+            placeholder='Set a city'
+            value={container.city}
+            onChange={event => handleCityChange(index, event.target.value)} // Handle city change for each container
+          />
+          <br/>
 
-      {selectedTimezone ? (
-        <div>
-          {containers.map((container, index) => (
-            <div key={index} className='timezone'>
-              <div>City: {selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
+          {container.selectedTimezone ? (
+            <div>
+              <div>City: {container.selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
               <div>
-                Current Date: {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).formattedDate}
+                Current Date: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedDate}
               </div>
               <div>
-                Current Time: {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).formattedTime} 
-                (<span>GMT {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
-                {formatDateTime(selectedTimezone.timestamp, selectedTimezone.gmtOffset).gmtOffsetInHours}:00</span>)
+                Current Time: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedTime} 
+                (<span>GMT {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
+                {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours}:00</span>)
               </div>
             </div>
-          ))}
-
-          <div className='addTimezone'>
-            <button onClick={handleAddCity}> + </button>
-          </div>
-        </div>
-      ) : (
-        <div>
+          ) : (
+        <div>     
           {containers.map((container, index) => (
             <div key={index} className='offline'>
               <div>
