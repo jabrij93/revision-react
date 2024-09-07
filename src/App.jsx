@@ -96,9 +96,9 @@ function App() {
       ) : (
         <div>
           {containers.map((container, index) => (
-            <div key={index}>
+            <div key={index} className='offline'>
               <div>
-                <div>City: {container.city ? container.city : 'Select a city'}</div>
+                <div>City: </div>
                 <div>Current Date: </div>
                 <div>Current Time: </div>
               </div>

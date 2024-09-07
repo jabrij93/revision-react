@@ -81,3 +81,10 @@ button:focus-visible {
 .newTimezone {
   border:solid;
 }
+
+.offline {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: solid;
+}
