@@ -97,6 +97,7 @@ function App() {
           {container.selectedTimezone ? (
             <div>
               <div>City: {container.selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
+              <div>Country: {container.selectedTimezone.countryName} </div>
               <div>
                 Current Date: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedDate}
               </div>
