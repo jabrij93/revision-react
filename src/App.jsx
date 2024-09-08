@@ -85,7 +85,7 @@ function App() {
   return (
     <div>
       <p> Time Zone App </p>
-
+  
       {containers.map((container, index) => (
         <div key={index} className='timezone'>
           <input
@@ -93,8 +93,8 @@ function App() {
             value={container.city}
             onChange={event => handleCityChange(index, event.target.value)} // Handle city change for each container
           />
-          <br/>
-
+          <br />
+  
           {container.selectedTimezone ? (
             <div>
               <div>City: {container.selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
@@ -108,25 +108,22 @@ function App() {
               </div>
             </div>
           ) : (
-        <div>     
-          {containers.map((container, index) => (
-            <div key={index} className='offline'>
+            <div className='offline'>
               <div>
-                <div>City: </div>
+                <div>City: 'Set a city...'</div>
                 <div>Current Date: </div>
                 <div>Current Time: </div>
               </div>
             </div>
-          ))}
-
-          <div className='addTimezone'>
-            <button onClick={handleAddCity}> + </button>
-          </div>
+          )}
         </div>
-      )}
+      ))}
+  
+      <div className='addTimezone'>
+        <button onClick={handleAddCity}> + </button>
+      </div>
     </div>
-
-  )
+  );
 }
 
 export default App
