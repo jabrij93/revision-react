@@ -93,7 +93,6 @@ function App() {
             value={container.city}
             onChange={event => handleCityChange(index, event.target.value)} // Handle city change for each container
           />
-          <br />
   
           {container.selectedTimezone ? (
             <div>
