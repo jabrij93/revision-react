@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
+import Clock from 'react-clock';  // Importing the clock component
+import 'react-clock/dist/Clock.css';  // Importing default styles
 import axios from 'axios';
 import { formatDateTime } from '../helper.js';
 import { TIMEZONE_API_KEY } from '../utils/config.js';  // Importing the key from config.js
@@ -51,12 +53,21 @@ function App() {
   console.log("timezoneDB", timezones)
   console.log("timezoneDB.zones", timezones.zones)
 
-  // const handleAddCity = async (city) => {
-  //     console.log("add city");
-  // }
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setContainers(containers => 
+        containers.map(container => ({
+          ...container,
+          currentTime: new Date()  // Update the currentTime for each container every second
+        }))
+      );
+    }, 1000);
+
+    return () => clearInterval(intervalId);  // Clean up the interval on component unmount
+  }, []);
 
   const handleAddCity = () => {
-    setContainers([...containers, { city: '' }]);
+    setContainers([...containers, { city: '', selectedTimezone: null, currentTime: new Date() }]);
   };
 
   // Handle city change and fetch corresponding timezone data
@@ -107,6 +118,7 @@ function App() {
                 (<span>GMT {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
                 {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours}:00</span>)
               </div>
+              <Clock value={container.currentTime} renderNumbers={true} /> {/* Add Clock in each container */}
             </div>
           ) : (
             <div className='offline'>
@@ -114,6 +126,7 @@ function App() {
                 <div>City: 'Set a city...'</div>
                 <div>Current Date: </div>
                 <div>Current Time: </div>
+                <Clock value={container.currentTime} renderNumbers={true} /> {/* Add Clock in offline state */}
               </div>
             </div>
           )}
