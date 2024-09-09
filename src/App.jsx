@@ -94,6 +94,20 @@ function App() {
     setContainers(updatedContainers); // Update containers with the new city and timezone
   };
 
+  // Helper function to convert local time to the selected timezone
+  const getTimeInTimezone = (timezone) => {
+    if (!timezone) return new Date();
+    
+    // Create a new date with the current time
+    const localDate = new Date();
+    // Convert the current time to the selected timezone by adjusting the offset
+    const localOffsetInMs = localDate.getTimezoneOffset() * 60 * 1000;
+    const timezoneOffsetInMs = timezone.gmtOffset * 1000;
+    const timezoneDate = new Date(localDate.getTime() + localOffsetInMs + timezoneOffsetInMs);
+
+    return timezoneDate;
+  };
+
   return (
     <div>
       <p> Time Zone App </p>
@@ -118,7 +132,7 @@ function App() {
                 (<span>GMT {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
                 {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours}:00</span>)
               </div>
-              <Clock value={container.currentTime} renderNumbers={true} /> {/* Add Clock in each container */}
+              <Clock value={getTimeInTimezone(container.selectedTimezone)} renderNumbers={true} />  {/* Clock using timezone time */}
             </div>
           ) : (
             <div className='offline'>
@@ -126,8 +140,8 @@ function App() {
                 <div>City: 'Set a city...'</div>
                 <div>Current Date: </div>
                 <div>Current Time: </div>
-                <Clock value={container.currentTime} renderNumbers={true} /> {/* Add Clock in offline state */}
-              </div>
+                <Clock value={getTimeInTimezone(container.selectedTimezone)} renderNumbers={true} />  {/* Clock using timezone time */}
+            </div>
             </div>
           )}
         </div>
