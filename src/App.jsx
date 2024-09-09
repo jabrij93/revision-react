@@ -62,6 +62,7 @@ function App() {
   // Handle city change and fetch corresponding timezone data
   const handleCityChange = (index, newCity) => {
     const updatedContainers = [...containers];
+    console.log('updatedContainers', updatedContainers);
     updatedContainers[index].city = newCity;
 
     // Find matching timezone based on city name
