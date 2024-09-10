@@ -127,11 +127,13 @@ function App() {
                 <div>
                   <div>City: {container.selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
                   <div>Country: {container.selectedTimezone.countryName}</div>
-
-                  {/* Display current local time */}
                   <div>
-                    <strong>Current Local Time:</strong>
-                    <Clock value={container.currentTime} renderNumbers={true} />
+                    Current Date: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedDate}
+                  </div>
+                  <div>
+                    Current Time: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedTime} 
+                    (<span>GMT {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
+                    {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours}:00</span>)
                   </div>
 
                   {/* Reference city (first city) allows time manipulation */}
