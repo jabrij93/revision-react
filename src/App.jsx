@@ -131,9 +131,9 @@ function App() {
                     Current Date: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedDate}
                   </div>
                   <div>
-                    Current Time: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedTime} 
-                    (<span>GMT {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
-                    {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours}:00</span>)
+                    Current Time: {formatDateTime(getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime).getTime(), container.selectedTimezone.gmtOffset).formattedTime} 
+                    (<span>GMT {formatDateTime(getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime).getTime(), container.selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
+                    {formatDateTime(getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime).getTime(), container.selectedTimezone.gmtOffset).gmtOffsetInHours}:00</span>)
                   </div>
 
                   {/* Reference city (first city) allows time manipulation */}
