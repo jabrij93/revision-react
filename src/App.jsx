@@ -97,27 +97,19 @@ function App() {
   // Adjust time for reference city (first container)
   const adjustReferenceTime = (newTime) => {
     const updatedContainers = [...containers];
-    // Instead of only updating referenceTime, update time based on selected timezone
-    updatedContainers.forEach((container, index) => {
-      const updatedTime = new Date(newTime.getTime() + container.selectedTimezone.gmtOffset * 1000);
-      container.referenceTime = updatedTime;
-    });
+    updatedContainers[0].referenceTime = newTime;
     setContainers(updatedContainers);
   };
-  
 
   // Helper function to convert local time to the selected timezone
-  const getTimeInTimezone = (timezone) => {
-    if (!timezone) return new Date();
-  
-    const now = new Date();
-    const localOffsetInMs = now.getTimezoneOffset() * 60 * 1000; // Offset of the local system time
-    const timezoneOffsetInMs = timezone.gmtOffset * 1000; // GMT offset in milliseconds
-    const timezoneDate = new Date(now.getTime() + localOffsetInMs + timezoneOffsetInMs);
+  const getTimeInTimezone = (timezone, referenceTime) => {
+    if (!timezone || !referenceTime) return new Date();
+
+    const localOffsetInMs = referenceTime.getTimezoneOffset() * 60 * 1000;
+    const timezoneOffsetInMs = timezone.gmtOffset * 1000;
+    const timezoneDate = new Date(referenceTime.getTime() + localOffsetInMs + timezoneOffsetInMs);
     return timezoneDate;
   };
-  
-  
 
   return (
     <div>
@@ -139,9 +131,9 @@ function App() {
                     Current Date: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedDate}
                   </div>
                   <div>
-                    Current Time: {formatDateTime(containers[index].referenceTime.getTime(), container.selectedTimezone.gmtOffset).formattedTime} 
-                    (<span>GMT {container.selectedTimezone.gmtOffset >= 0 ? '+' : ''}
-                    {container.selectedTimezone.gmtOffset / 3600}:00</span>)
+                    Current Time: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedTime} 
+                    (<span>GMT {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
+                    {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours}:00</span>)
                   </div>
 
                   {/* Reference city (first city) allows time manipulation */}
