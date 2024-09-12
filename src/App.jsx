@@ -145,18 +145,19 @@ function App() {
                     Current Date: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedDate}
                   </div>
                   <div>
-                    Current Time: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedTime} 
-                    (<span>GMT {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
-                    {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours}:00</span>)
+                    {/* Calculate the current time dynamically based on the reference time */}
+                    Current Time: {getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime).toLocaleTimeString()} 
+                    (<span>GMT {container.selectedTimezone.gmtOffset >= 0 ? '+' : ''}
+                    {(container.selectedTimezone.gmtOffset / 3600)}:00</span>)
                   </div>
 
                   {/* Reference city (first city) allows time manipulation */}
                   {index === 0 ? (
                     <div>
                        <input
-                      type="time"
-                      onChange={handleTimeInputChange} // Handle time input change
-                    />
+                        type="time"
+                        onChange={handleTimeInputChange} // Handle time input change
+                      />
                       <Clock value={containers[0].referenceTime} renderNumbers={true} />
                     </div>
                   ) : (
