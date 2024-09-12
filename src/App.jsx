@@ -154,10 +154,13 @@ function App() {
                   {/* Reference city (first city) allows time manipulation */}
                   {index === 0 ? (
                     <div>
-                       <input
-                        type="time"
-                        onChange={handleTimeInputChange} // Handle time input change
-                      />
+                       <span> Time Input: 
+                          <input
+                            type="time"
+                            onChange={handleTimeInputChange} // Handle time input change
+                            placeholder='insert any time(12-hour format)'
+                          /> 
+                       </span>
                       <Clock value={containers[0].referenceTime} renderNumbers={true} />
                     </div>
                   ) : (
