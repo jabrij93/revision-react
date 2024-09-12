@@ -13,7 +13,7 @@ function App() {
   const [timezones, setTimezones] = useState([]);
   const [city, setCity] = useState('Jakarta');
   const [selectedTimezone, setSelectedTimezone] = useState(null);
-  const [containers, setContainers] = useState([{ city: '', selectedTimezone: null }]); // Updated containers to hold both city and timezone
+  const [containers, setContainers] = useState([{ city: '', selectedTimezone: null, referenceTime: new Date() }]); // Updated containers to hold both city and timezone
 
   useEffect(() => {
     const getAll = async () => {
@@ -94,18 +94,35 @@ function App() {
     setContainers(updatedContainers); // Update containers with the new city and timezone
   };
 
-  // Helper function to convert local time to the selected timezone
-  const getTimeInTimezone = (timezone) => {
-    if (!timezone) return new Date();
-    
-    // Create a new date with the current time
-    const localDate = new Date();
-    // Convert the current time to the selected timezone by adjusting the offset
-    const localOffsetInMs = localDate.getTimezoneOffset() * 60 * 1000;
-    const timezoneOffsetInMs = timezone.gmtOffset * 1000;
-    const timezoneDate = new Date(localDate.getTime() + localOffsetInMs + timezoneOffsetInMs);
+  // Adjust time for reference city (first container)
+  const adjustReferenceTime = (newTime) => {
+    const updatedContainers = [...containers];
+    updatedContainers[0].referenceTime = newTime;
+    setContainers(updatedContainers);
+  };
 
+  // Helper function to convert local time to the selected timezone
+  const getTimeInTimezone = (timezone, referenceTime) => {
+    if (!timezone || !referenceTime) return new Date();
+
+    const localOffsetInMs = referenceTime.getTimezoneOffset() * 60 * 1000;
+    const timezoneOffsetInMs = timezone.gmtOffset * 1000;
+    const timezoneDate = new Date(referenceTime.getTime() + localOffsetInMs + timezoneOffsetInMs);
     return timezoneDate;
+  };
+
+  // Handle time input change for the reference city
+  const handleTimeInputChange = (event) => {
+    const timeString = event.target.value; // Get the time in "HH:MM" format
+    const [hours, minutes] = timeString.split(':').map(Number);
+    
+    // Create a new Date object with the selected hours and minutes
+    const newReferenceTime = new Date();
+    newReferenceTime.setHours(hours);
+    newReferenceTime.setMinutes(minutes);
+    newReferenceTime.setSeconds(0); // Reset seconds to 0
+    
+    adjustReferenceTime(newReferenceTime); // Update the reference time
   };
 
   return (
@@ -120,29 +137,37 @@ function App() {
             onChange={event => handleCityChange(index, event.target.value)} // Handle city change for each container
           />
   
-          {container.selectedTimezone ? (
-            <div>
-              <div>City: {container.selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
-              <div>Country: {container.selectedTimezone.countryName} </div>
-              <div>
-                Current Date: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedDate}
-              </div>
-              <div>
-                Current Time: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedTime} 
-                (<span>GMT {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
-                {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours}:00</span>)
-              </div>
-              <Clock value={getTimeInTimezone(container.selectedTimezone)} renderNumbers={true} />  {/* Clock using timezone time */}
-            </div>
+        {container.selectedTimezone ? (
+                <div>
+                  <div>City: {container.selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
+                  <div>Country: {container.selectedTimezone.countryName}</div>
+                  <div>
+                    Current Date: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedDate}
+                  </div>
+                  <div>
+                    Current Time: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedTime} 
+                    (<span>GMT {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
+                    {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours}:00</span>)
+                  </div>
+
+                  {/* Reference city (first city) allows time manipulation */}
+                  {index === 0 ? (
+                    <div>
+                       <input
+                      type="time"
+                      onChange={handleTimeInputChange} // Handle time input change
+                    />
+                      <Clock value={containers[0].referenceTime} renderNumbers={true} />
+                    </div>
+                  ) : (
+                    <div>
+                      {/* Other cities' times adjusted based on reference city */}
+                      <Clock value={getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime)} renderNumbers={true} />
+                    </div>
+                  )}
+                </div>
           ) : (
-            <div className='offline'>
-              <div>
-                <div>City: 'Set a city...'</div>
-                <div>Current Date: </div>
-                <div>Current Time: </div>
-                <Clock value={getTimeInTimezone(container.selectedTimezone)} renderNumbers={true} />  {/* Clock using timezone time */}
-            </div>
-            </div>
+            <div>Set a city...</div>
           )}
         </div>
       ))}
