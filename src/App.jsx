@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import Clock from 'react-clock';  // Importing the clock component
 import 'react-clock/dist/Clock.css';  // Importing default styles
 import axios from 'axios';
@@ -9,7 +7,6 @@ import { TIMEZONE_API_KEY } from '../utils/config.js';  // Importing the key fro
 import './App.css'
 
 function App() {
-  const [weatherData, setWeatherData] = useState('');
   const [timezones, setTimezones] = useState([]);
   const [city, setCity] = useState('Jakarta');
   const [selectedTimezone, setSelectedTimezone] = useState(null);
@@ -86,6 +83,7 @@ function App() {
       const timezoneOffsetInMs = matchingTimezone.gmtOffset * 1000;
       const localOffsetInMs = new Date().getTimezoneOffset() * 60 * 1000;
       const cityTime = new Date(new Date().getTime() + localOffsetInMs + timezoneOffsetInMs);
+      console.log("city Time", cityTime)
 
       updatedContainers[index].selectedTimezone = {
         ...matchingTimezone,
@@ -117,6 +115,7 @@ function App() {
     const localOffsetInMs = referenceTime.getTimezoneOffset() * 60 * 1000;
     const timezoneOffsetInMs = timezone.gmtOffset * 1000;
     const timezoneDate = new Date(referenceTime.getTime() + localOffsetInMs + timezoneOffsetInMs);
+    console.log('timezoneDate', timezoneDate)
     return timezoneDate;
   };
 
