@@ -83,10 +83,19 @@ function App() {
     });
 
     if (matchingTimezone) {
+      const timezoneOffsetInMs = matchingTimezone.gmtOffset * 1000;
+      const localOffsetInMs = new Date().getTimezoneOffset() * 60 * 1000;
+      const cityTime = new Date(new Date().getTime() + localOffsetInMs + timezoneOffsetInMs);
+
       updatedContainers[index].selectedTimezone = {
         ...matchingTimezone,
         timestamp: Math.floor(Date.now() / 1000), // Use current timestamp
       };
+      
+      // Automatically set referenceTime to the city's current time if it's the first container
+      if (index === 0) {
+        updatedContainers[0].referenceTime = cityTime;
+      }
     } else {
       updatedContainers[index].selectedTimezone = null; // Clear the timezone if no match
     }
