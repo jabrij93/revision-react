@@ -15,6 +15,8 @@ function App() {
   const [selectedTimezone, setSelectedTimezone] = useState(null);
   const [containers, setContainers] = useState([{ city: '', selectedTimezone: null, referenceTime: new Date() }]); // Updated containers to hold both city and timezone
 
+  console.log('New date', new Date());
+
   useEffect(() => {
     const getAll = async () => {
       const timezoneDB = `http://api.timezonedb.com/v2.1/list-time-zone?key=${TIMEZONE_API_KEY}&format=json`
@@ -31,6 +33,8 @@ function App() {
     };
     getAll();
   }, []);
+
+  
 
   useEffect(() => {
     if (timezones.length > 0) {
@@ -130,11 +134,11 @@ function App() {
                   <div>
                     Current Date: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedDate}
                   </div>
-                  <div>
+                  {/* <div>
                     Current Time: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedTime} 
                     (<span>GMT {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours >= 0 ? '+' : ''}
                     {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).gmtOffsetInHours}:00</span>)
-                  </div>
+                  </div> */}
 
                   {/* Reference city (first city) allows time manipulation */}
                   {index === 0 ? (
