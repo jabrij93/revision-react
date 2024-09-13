@@ -8,9 +8,9 @@ import './App.css'
 
 function App() {
   const [timezones, setTimezones] = useState([]);
-  const [city, setCity] = useState('Jakarta');
+  const [city, setCity] = useState('');
   const [selectedTimezone, setSelectedTimezone] = useState(null);
-  const [containers, setContainers] = useState([{ city: '', selectedTimezone: null, referenceTime: new Date() }]); // Updated containers to hold both city and timezone
+  const [containers, setContainers] = useState([{ city: 'Jakarta', selectedTimezone: null, referenceTime: new Date() }]); // Updated containers to hold both city and timezone
 
   useEffect(() => {
     const getAll = async () => {
@@ -80,7 +80,9 @@ function App() {
     });
 
     if (matchingTimezone) {
+      console.log("matchingTimezone", matchingTimezone.gmtOffset)
       const timezoneOffsetInMs = matchingTimezone.gmtOffset * 1000;
+
       const localOffsetInMs = new Date().getTimezoneOffset() * 60 * 1000;
       const cityTime = new Date(new Date().getTime() + localOffsetInMs + timezoneOffsetInMs);
       console.log("city Time", cityTime)
@@ -111,7 +113,7 @@ function App() {
   // Helper function to convert local time to the selected timezone
   const getTimeInTimezone = (timezone, referenceTime) => {
     if (!timezone || !referenceTime) return new Date();
-
+    console.log("referenceTime", referenceTime)
     const localOffsetInMs = referenceTime.getTimezoneOffset() * 60 * 1000;
     const timezoneOffsetInMs = timezone.gmtOffset * 1000;
     const timezoneDate = new Date(referenceTime.getTime() + localOffsetInMs + timezoneOffsetInMs);
