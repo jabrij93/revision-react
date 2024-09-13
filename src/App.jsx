@@ -83,6 +83,7 @@ function App() {
       console.log("matchingTimezone", matchingTimezone.gmtOffset)
       const timezoneOffsetInMs = matchingTimezone.gmtOffset * 1000;
 
+      console.log('new Date', new Date());
       const localOffsetInMs = new Date().getTimezoneOffset() * 60 * 1000;
       const cityTime = new Date(new Date().getTime() + localOffsetInMs + timezoneOffsetInMs);
       console.log("city Time", cityTime)
@@ -113,11 +114,22 @@ function App() {
   // Helper function to convert local time to the selected timezone
   const getTimeInTimezone = (timezone, referenceTime) => {
     if (!timezone || !referenceTime) return new Date();
-    console.log("referenceTime", referenceTime)
+  
+    console.log("referenceTime", referenceTime);
+    console.log("referenceTime.Offset", referenceTime.getTimezoneOffset());
+  
+    // Get the local offset from the reference time in milliseconds
     const localOffsetInMs = referenceTime.getTimezoneOffset() * 60 * 1000;
+    console.log("localOffsetInMs", localOffsetInMs);
+  
+    // Target timezone offset in milliseconds
     const timezoneOffsetInMs = timezone.gmtOffset * 1000;
+    console.log("timezoneOffsetInMs", timezoneOffsetInMs);
+  
+    // Convert referenceTime to the target timezone
     const timezoneDate = new Date(referenceTime.getTime() + localOffsetInMs + timezoneOffsetInMs);
-    console.log('timezoneDate', timezoneDate)
+    console.log('timezoneDate', timezoneDate);
+  
     return timezoneDate;
   };
 
