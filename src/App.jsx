@@ -153,7 +153,7 @@ const handleCityChange = (index, newCity) => {
   
     // Use the Intl.DateTimeFormat API to convert the time to the desired time zone
     const timeZoneDate = new Intl.DateTimeFormat('en-US', {
-      timeZone: timezone.name, // Pass the timezone name like 'Asia/Kuala_Lumpur', 'Asia/Jakarta', etc.
+      timeZone: timezone.zoneName, // Pass the timezone name like 'Asia/Kuala_Lumpur', 'Asia/Jakarta', etc.
       hour: 'numeric',
       minute: 'numeric',
       second: 'numeric',
