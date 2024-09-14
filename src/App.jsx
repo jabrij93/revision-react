@@ -70,41 +70,75 @@ function App() {
   };
 
   // Handle city change and fetch corresponding timezone data
-  const handleCityChange = (index, newCity) => {
-    const updatedContainers = [...containers];
-    console.log('updatedContainers', updatedContainers);
-    updatedContainers[index].city = newCity;
+  // Handle city change and fetch corresponding timezone data
+const handleCityChange = (index, newCity) => {
+  const updatedContainers = [...containers];
+  updatedContainers[index].city = newCity;
 
-    // Find matching timezone based on city name
-    const matchingTimezone = timezones.find(zone => {
-      const cityNameFromZone = zone.zoneName.split('/')[1].replace('_', ' ').toLowerCase();
-      return cityNameFromZone.includes(newCity.toLowerCase());
-    });
+  // Find matching timezone based on city name
+  const matchingTimezone = timezones.find(zone => {
+    const cityNameFromZone = zone.zoneName.split('/')[1].replace('_', ' ').toLowerCase();
+    return cityNameFromZone.includes(newCity.toLowerCase());
+  });
 
-    if (matchingTimezone) {
-      console.log("matchingTimezone", matchingTimezone.gmtOffset)
-      const timezoneOffsetInMs = matchingTimezone.gmtOffset * 1000;
-
-      console.log('new Date', new Date());
-      const localOffsetInMs = new Date().getTimezoneOffset() * 60 * 1000;
-      const cityTime = new Date(new Date().getTime() + localOffsetInMs + timezoneOffsetInMs);
-      console.log("city Time", cityTime)
-
-      updatedContainers[index].selectedTimezone = {
-        ...matchingTimezone,
-        timestamp: Math.floor(Date.now() / 1000), // Use current timestamp
-      };
-      
-      // Automatically set referenceTime to the city's current time if it's the first container
-      if (index === 0) {
-        updatedContainers[0].referenceTime = cityTime;
-      }
+  if (matchingTimezone) {
+    updatedContainers[index].selectedTimezone = {
+      ...matchingTimezone,
+      timestamp: Math.floor(Date.now() / 1000), // Use current timestamp
+    };
+    
+    // Automatically set referenceTime to the city's current time if it's the first container
+    if (index === 0) {
+      updatedContainers[0].referenceTime = new Date(); // Update the first container's reference time to the current time
     } else {
-      updatedContainers[index].selectedTimezone = null; // Clear the timezone if no match
-    }
+      // Adjust the time difference for other cities based on the first container's reference time
+      const gmtOffsetDifferenceInMs = (matchingTimezone.gmtOffset - updatedContainers[0].selectedTimezone.gmtOffset) * 1000;
 
-    setContainers(updatedContainers); // Update containers with the new city and timezone
-  };
+      // Set the referenceTime for the new city by adjusting the time using the offset difference
+      updatedContainers[index].referenceTime = new Date(updatedContainers[0].referenceTime.getTime() + gmtOffsetDifferenceInMs);
+    }
+  } else {
+    updatedContainers[index].selectedTimezone = null; // Clear the timezone if no match
+  }
+
+  setContainers(updatedContainers); // Update containers with the new city and timezone
+};
+
+  // const handleCityChange = (index, newCity) => {
+  //   const updatedContainers = [...containers];
+  //   console.log('updatedContainers', updatedContainers);
+  //   updatedContainers[index].city = newCity;
+
+  //   // Find matching timezone based on city name
+  //   const matchingTimezone = timezones.find(zone => {
+  //     const cityNameFromZone = zone.zoneName.split('/')[1].replace('_', ' ').toLowerCase();
+  //     return cityNameFromZone.includes(newCity.toLowerCase());
+  //   });
+
+  //   if (matchingTimezone) {
+  //     console.log("matchingTimezone", matchingTimezone.gmtOffset)
+  //     const timezoneOffsetInMs = matchingTimezone.gmtOffset * 1000;
+
+  //     console.log('new Date', new Date());
+  //     const localOffsetInMs = new Date().getTimezoneOffset() * 60 * 1000;
+  //     const cityTime = new Date(new Date().getTime() + localOffsetInMs + timezoneOffsetInMs);
+  //     console.log("city Time", cityTime)
+
+  //     updatedContainers[index].selectedTimezone = {
+  //       ...matchingTimezone,
+  //       timestamp: Math.floor(Date.now() / 1000), // Use current timestamp
+  //     };
+      
+  //     // Automatically set referenceTime to the city's current time if it's the first container
+  //     if (index === 0) {
+  //       updatedContainers[0].referenceTime = cityTime;
+  //     }
+  //   } else {
+  //     updatedContainers[index].selectedTimezone = null; // Clear the timezone if no match
+  //   }
+
+  //   setContainers(updatedContainers); // Update containers with the new city and timezone
+  // };
 
   // Adjust time for reference city (first container)
   const adjustReferenceTime = (newTime) => {
@@ -114,25 +148,19 @@ function App() {
   };
 
   // Helper function to convert local time to the selected timezone
-  const getTimeInTimezone = (timezone, referenceTime) => {
+    const getTimeInTimezone = (timezone, referenceTime) => {
     if (!timezone || !referenceTime) return new Date();
   
-    console.log("referenceTime", referenceTime);
-    console.log("referenceTime.Offset", referenceTime.getTimezoneOffset());
-  
-    // Get the local offset from the reference time in milliseconds
-    const localOffsetInMs = referenceTime.getTimezoneOffset() * 60 * 1000;
-    console.log("localOffsetInMs", localOffsetInMs);
-  
-    // Target timezone offset in milliseconds
-    const timezoneOffsetInMs = timezone.gmtOffset * 1000;
-    console.log("timezoneOffsetInMs", timezoneOffsetInMs);
-  
-    // Convert referenceTime to the target timezone
-    const timezoneDate = new Date(referenceTime.getTime() + localOffsetInMs + timezoneOffsetInMs);
-    console.log('timezoneDate', timezoneDate);
-  
-    return timezoneDate;
+    // Use the Intl.DateTimeFormat API to convert the time to the desired time zone
+    const timeZoneDate = new Intl.DateTimeFormat('en-US', {
+      timeZone: timezone.name, // Pass the timezone name like 'Asia/Kuala_Lumpur', 'Asia/Jakarta', etc.
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: false,
+    }).format(referenceTime);
+
+    return timeZoneDate;
   };
 
   // Handle time input change for the reference city
@@ -170,13 +198,36 @@ function App() {
                   </div>
                   <div>
                     {/* Calculate the current time dynamically based on the reference time */}
+                    Current Time: {getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime)} 
+                  </div>
+                    {/* (<span>{container.selectedTimezone.name}</span>) }
+                  {/* <div>
+                    {/* Calculate the current time dynamically based on the reference time 
                     Current Time: {getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime).toLocaleTimeString()} 
                     (<span>GMT {container.selectedTimezone.gmtOffset >= 0 ? '+' : ''}
                     {(container.selectedTimezone.gmtOffset / 3600)}:00</span>)
-                  </div>
+                  </div> */}
 
                   {/* Reference city (first city) allows time manipulation */}
                   {index === 0 ? (
+                  <div>
+                    <span> Time Input: 
+                      <input
+                        type="time"
+                        onChange={handleTimeInputChange} // Handle time input change
+                        placeholder='insert any time(12-hour format)'
+                      /> 
+                    </span>
+                    <Clock value={containers[0].referenceTime} renderNumbers={true} />
+                  </div>
+                  ) : (
+                    <div>
+                      {/* Render the adjusted time for other cities */}
+                      <Clock value={containers[index].referenceTime} renderNumbers={true} />
+                    </div>
+                  )}
+
+                  {/* {index === 0 ? (
                     <div>
                        <span> Time Input: 
                           <input
@@ -189,10 +240,10 @@ function App() {
                     </div>
                   ) : (
                     <div>
-                      {/* Other cities' times adjusted based on reference city */}
+                      {/* Other cities' times adjusted based on reference city 
                       <Clock value={getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime)} renderNumbers={true} />
                     </div>
-                  )}
+                  )} */}
                 </div>
           ) : (
             <div>Set a city...</div>
