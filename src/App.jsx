@@ -70,7 +70,6 @@ function App() {
   };
 
   // Handle city change and fetch corresponding timezone data
-  // Handle city change and fetch corresponding timezone data
 const handleCityChange = (index, newCity) => {
   const updatedContainers = [...containers];
   updatedContainers[index].city = newCity;
@@ -103,42 +102,6 @@ const handleCityChange = (index, newCity) => {
 
   setContainers(updatedContainers); // Update containers with the new city and timezone
 };
-
-  // const handleCityChange = (index, newCity) => {
-  //   const updatedContainers = [...containers];
-  //   console.log('updatedContainers', updatedContainers);
-  //   updatedContainers[index].city = newCity;
-
-  //   // Find matching timezone based on city name
-  //   const matchingTimezone = timezones.find(zone => {
-  //     const cityNameFromZone = zone.zoneName.split('/')[1].replace('_', ' ').toLowerCase();
-  //     return cityNameFromZone.includes(newCity.toLowerCase());
-  //   });
-
-  //   if (matchingTimezone) {
-  //     console.log("matchingTimezone", matchingTimezone.gmtOffset)
-  //     const timezoneOffsetInMs = matchingTimezone.gmtOffset * 1000;
-
-  //     console.log('new Date', new Date());
-  //     const localOffsetInMs = new Date().getTimezoneOffset() * 60 * 1000;
-  //     const cityTime = new Date(new Date().getTime() + localOffsetInMs + timezoneOffsetInMs);
-  //     console.log("city Time", cityTime)
-
-  //     updatedContainers[index].selectedTimezone = {
-  //       ...matchingTimezone,
-  //       timestamp: Math.floor(Date.now() / 1000), // Use current timestamp
-  //     };
-      
-  //     // Automatically set referenceTime to the city's current time if it's the first container
-  //     if (index === 0) {
-  //       updatedContainers[0].referenceTime = cityTime;
-  //     }
-  //   } else {
-  //     updatedContainers[index].selectedTimezone = null; // Clear the timezone if no match
-  //   }
-
-  //   setContainers(updatedContainers); // Update containers with the new city and timezone
-  // };
 
   // Adjust time for reference city (first container)
   const adjustReferenceTime = (newTime) => {
