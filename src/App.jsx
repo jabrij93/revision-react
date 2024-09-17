@@ -148,9 +148,9 @@ const handleCityChange = (index, newCity) => {
   };
 
   // Helper function to convert local time to the selected timezone
-    const getTimeInTimezone = (timezone, referenceTime) => {
+  const getTimeInTimezone = (timezone, referenceTime) => {
     if (!timezone || !referenceTime) return new Date();
-  
+
     // Use the Intl.DateTimeFormat API to convert the time to the desired time zone
     const timeZoneDate = new Intl.DateTimeFormat('en-US', {
       timeZone: timezone.zoneName, // Pass the timezone name like 'Asia/Kuala_Lumpur', 'Asia/Jakarta', etc.
@@ -188,63 +188,42 @@ const handleCityChange = (index, newCity) => {
             value={container.city}
             onChange={event => handleCityChange(index, event.target.value)} // Handle city change for each container
           />
-  
-        {container.selectedTimezone ? (
+
+          {container.selectedTimezone ? (
+            <div>
+              <div>City: {container.selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
+              <div>Country: {container.selectedTimezone.countryName}</div>
+              <div>
+                Current Date: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedDate}
+              </div>
+
+              {/* Only show "Current Time" for containers other than the first one */}
+              
                 <div>
-                  <div>City: {container.selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
-                  <div>Country: {container.selectedTimezone.countryName}</div>
-                  <div>
-                    Current Date: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedDate}
-                  </div>
-                  <div>
-                    {/* Calculate the current time dynamically based on the reference time */}
-                    Current Time: {getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime)} 
-                  </div>
-                    {/* (<span>{container.selectedTimezone.name}</span>) }
-                  {/* <div>
-                    {/* Calculate the current time dynamically based on the reference time 
-                    Current Time: {getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime).toLocaleTimeString()} 
-                    (<span>GMT {container.selectedTimezone.gmtOffset >= 0 ? '+' : ''}
-                    {(container.selectedTimezone.gmtOffset / 3600)}:00</span>)
-                  </div> */}
-
-                  {/* Reference city (first city) allows time manipulation */}
-                  {index === 0 ? (
-                  <div>
-                    <span> Time Input: 
-                      <input
-                        type="time"
-                        onChange={handleTimeInputChange} // Handle time input change
-                        placeholder='insert any time(12-hour format)'
-                      /> 
-                    </span>
-                    <Clock value={containers[0].referenceTime} renderNumbers={true} />
-                  </div>
-                  ) : (
-                    <div>
-                      {/* Render the adjusted time for other cities */}
-                      <Clock value={containers[index].referenceTime} renderNumbers={true} />
-                    </div>
-                  )}
-
-                  {/* {index === 0 ? (
-                    <div>
-                       <span> Time Input: 
-                          <input
-                            type="time"
-                            onChange={handleTimeInputChange} // Handle time input change
-                            placeholder='insert any time(12-hour format)'
-                          /> 
-                       </span>
-                      <Clock value={containers[0].referenceTime} renderNumbers={true} />
-                    </div>
-                  ) : (
-                    <div>
-                      {/* Other cities' times adjusted based on reference city 
-                      <Clock value={getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime)} renderNumbers={true} />
-                    </div>
-                  )} */}
+                  {/* Calculate the current time dynamically based on the reference time from the first container */}
+                  Current Time: {getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime)}
                 </div>
+              
+
+              {/* Reference city (first city) allows time manipulation */}
+              {index === 0 ? (
+                <div>
+                  <span> Select Time: 
+                    <input
+                      type="time"
+                      onChange={handleTimeInputChange} // Handle time input change
+                      placeholder='insert any time(12-hour format)'
+                    /> 
+                  </span>
+                  <Clock value={containers[0].referenceTime} renderNumbers={true} />
+                </div>
+              ) : (
+                <div>
+                  {/* Render the adjusted time for other cities */}
+                  <Clock value={containers[index].referenceTime} renderNumbers={true} />
+                </div>
+              )}
+            </div>
           ) : (
             <div>Set a city...</div>
           )}
