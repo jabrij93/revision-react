@@ -159,10 +159,13 @@ const handleCityChange = (index, newCity) => {
                   <div>
                     Current Date: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedDate}
                   </div>
-                  <div>
-                    {/* Calculate the current time dynamically based on the reference time */}
-                    Current Time: {getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime)} 
-                  </div>
+                  {/* Only show the "Current Time" for containers other than the first one */}
+                  {index !== 0 && (
+                    <div>
+                      {/* Calculate the current time dynamically based on the reference time */}
+                      Current Time: {getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime)}
+                    </div>
+                  )}
                     {/* (<span>{container.selectedTimezone.name}</span>) }
                   {/* <div>
                     {/* Calculate the current time dynamically based on the reference time 
@@ -174,7 +177,7 @@ const handleCityChange = (index, newCity) => {
                   {/* Reference city (first city) allows time manipulation */}
                   {index === 0 ? (
                   <div>
-                    <span> Time Input: 
+                    <span> Select Time: 
                       <input
                         type="time"
                         onChange={handleTimeInputChange} // Handle time input change
