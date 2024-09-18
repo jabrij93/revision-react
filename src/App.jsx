@@ -142,9 +142,21 @@ const handleCityChange = (index, newCity) => {
 
   // Adjust time for reference city (first container)
   const adjustReferenceTime = (newTime) => {
-    const updatedContainers = [...containers];
-    updatedContainers[0].referenceTime = newTime;
-    setContainers(updatedContainers);
+    const updatedContainers = containers.map((container, index) => {
+      if (index === 0) {
+        // For the first container, just set the new reference time
+        return { ...container, referenceTime: newTime };
+      } else {
+        // For other containers, calculate the time difference based on the first container's reference time and adjust accordingly
+        const gmtOffsetDifferenceInMs = (container.selectedTimezone.gmtOffset - containers[0].selectedTimezone.gmtOffset) * 1000;
+        return { 
+          ...container, 
+          referenceTime: new Date(newTime.getTime() + gmtOffsetDifferenceInMs)
+        };
+      }
+    });
+  
+    setContainers(updatedContainers);  // Update the state
   };
 
 
@@ -211,7 +223,6 @@ const handleCityChange = (index, newCity) => {
               </div>
 
               {/* Only show "Current Time" for containers other than the first one */}
-              
                 <div>
                   {/* Format the referenceTime as a 12-hour format string before rendering */}
                   Time Now: {currentTime(index)}
