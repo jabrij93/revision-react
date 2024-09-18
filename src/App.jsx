@@ -147,6 +147,8 @@ const handleCityChange = (index, newCity) => {
     setContainers(updatedContainers);
   };
 
+
+
   // Helper function to convert local time to the selected timezone
   const getTimeInTimezone = (timezone, referenceTime) => {
     if (!timezone || !referenceTime) return new Date();
@@ -157,11 +159,21 @@ const handleCityChange = (index, newCity) => {
       hour: 'numeric',
       minute: 'numeric',
       second: 'numeric',
-      hour12: false,
+      hour12: true,
     }).format(referenceTime);
+
+    console.log('timeZoneDate', timeZoneDate)
 
     return timeZoneDate;
   };
+
+  {/* Format the referenceTime as a 12-hour format string before rendering */}
+  const currentTime = (index) => { return containers[index].referenceTime.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: true,
+  })}
 
   // Handle time input change for the reference city
   const handleTimeInputChange = (event) => {
@@ -191,19 +203,25 @@ const handleCityChange = (index, newCity) => {
 
           {container.selectedTimezone ? (
             <div>
+              <h5>Time in your target city</h5>
               <div>City: {container.selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
               <div>Country: {container.selectedTimezone.countryName}</div>
               <div>
-                Current Date: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedDate}
+                Date Today: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedDate}
               </div>
 
               {/* Only show "Current Time" for containers other than the first one */}
               
                 <div>
                   {/* Calculate the current time dynamically based on the reference time from the first container */}
-                  Current Time: {getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime)}
+                  Time Now: {getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime)}
                 </div>
-              
+                <h5>Current local time at your current location right now</h5>
+                
+                <div>
+                  {/* Format the referenceTime as a 12-hour format string before rendering */}
+                  Time Now: {currentTime(index)}
+                </div>
 
               {/* Reference city (first city) allows time manipulation */}
               {index === 0 ? (
