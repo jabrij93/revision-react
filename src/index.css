@@ -68,7 +68,7 @@ button:focus-visible {
 }
 
 .timezone {
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
