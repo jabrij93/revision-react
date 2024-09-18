@@ -168,11 +168,12 @@ const handleCityChange = (index, newCity) => {
   };
 
   {/* Format the referenceTime as a 12-hour format string before rendering */}
-  const currentTime = (index) => { return containers[index].referenceTime.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
-    hour12: true,
+  const currentTime = (index) => { 
+    return containers[index].referenceTime.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: true,
   })}
 
   // Handle time input change for the reference city
