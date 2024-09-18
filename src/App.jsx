@@ -203,7 +203,6 @@ const handleCityChange = (index, newCity) => {
 
           {container.selectedTimezone ? (
             <div>
-              <h5>Time in your target city</h5>
               <div>City: {container.selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
               <div>Country: {container.selectedTimezone.countryName}</div>
               <div>
@@ -212,12 +211,6 @@ const handleCityChange = (index, newCity) => {
 
               {/* Only show "Current Time" for containers other than the first one */}
               
-                <div>
-                  {/* Calculate the current time dynamically based on the reference time from the first container */}
-                  Time Now: {getTimeInTimezone(container.selectedTimezone, containers[0].referenceTime)}
-                </div>
-                <h5>Current local time at your current location right now</h5>
-                
                 <div>
                   {/* Format the referenceTime as a 12-hour format string before rendering */}
                   Time Now: {currentTime(index)}
