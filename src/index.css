@@ -82,8 +82,11 @@ button:focus-visible {
   gap: 10px;
   border: solid;
   min-width: 200px; /* Ensures it takes full width, if necessary */
-  height: 300px; /* Set a fixed height to ensure vertical centering */
+  height: 320px; /* Set a fixed height to ensure vertical centering */
   margin: 0 auto;
+  padding: 10px; 
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .clock {
@@ -91,4 +94,7 @@ button:focus-visible {
   justify-content: center; /* Center horizontally */
   align-items: center; /* Center vertically */
   flex-direction: column;
+  gap: 10px; /* You can keep the gap */
+  width: 100%; /* Ensure the clock takes up the full width of the container */
+  max-width: 100%; /* Prevent the clock from exceeding the container’s width */
 }
