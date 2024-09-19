@@ -67,11 +67,28 @@ button:focus-visible {
   }
 }
 
+.timezone-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap; 
+}
+
 .timezone {
-  display: inline-flex;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 10px;
   border: solid;
+  min-width: 200px; /* Ensures it takes full width, if necessary */
+  height: 300px; /* Set a fixed height to ensure vertical centering */
+  margin: 0 auto;
+}
+
+.clock {
+  display: flex; /* Ensure the clock container is a flex container */
+  justify-content: center; /* Center horizontally */
+  align-items: center; /* Center vertically */
+  flex-direction: column;
 }
