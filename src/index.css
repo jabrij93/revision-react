@@ -79,14 +79,3 @@ button:focus-visible {
 .addTimezone {
   display: inline;
 }
-
-.newTimezone {
-  border:solid;
-}
-
-.offline {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border: solid;
-}
