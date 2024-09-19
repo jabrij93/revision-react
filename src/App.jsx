@@ -11,6 +11,7 @@ function App() {
   const [city, setCity] = useState('');
   const [selectedTimezone, setSelectedTimezone] = useState(null);
   const [containers, setContainers] = useState([{ city: 'Jakarta', selectedTimezone: null, referenceTime: new Date() }]); // Updated containers to hold both city and timezone
+  console.log("containers", containers)
 
   useEffect(() => {
     const getAll = async () => {
@@ -18,7 +19,7 @@ function App() {
       try {
         const response = await axios.get(timezoneDB);
         if (response.data?.zones?.length) {
-          setTimezones(response.data.zones);
+          setTimezones(response.data.zones);  
         } else {
           console.error('Unexpected data format', response.data);
         }
@@ -28,8 +29,6 @@ function App() {
     };
     getAll();
   }, []);
-
-  
 
   useEffect(() => {
     if (timezones.length > 0) {
@@ -122,8 +121,6 @@ const handleCityChange = (index, newCity) => {
     setContainers(updatedContainers);  // Update the state
   };
 
-
-
   // Helper function to convert local time to the selected timezone
   const getTimeInTimezone = (timezone, referenceTime) => {
     if (!timezone || !referenceTime) return new Date();
@@ -171,49 +168,52 @@ const handleCityChange = (index, newCity) => {
   
       {containers.map((container, index) => (
         <div key={index} className='timezone'>
-          <input
-            placeholder='Set a city'
-            value={container.city}
-            onChange={event => handleCityChange(index, event.target.value)} // Handle city change for each container
-          />
+            
+              <input
+                placeholder='Set a city'
+                value={container.city}
+                onChange={event => handleCityChange(index, event.target.value)} // Handle city change for each container
+              />
 
-          {container.selectedTimezone ? (
-            <div>
-              <div>City: {container.selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
-              <div>Country: {container.selectedTimezone.countryName}</div>
-              <div>
-                Date Today: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedDate}
-              </div>
-
-              {/* Only show "Current Time" for containers other than the first one */}
+              {container.selectedTimezone ? (
                 <div>
-                  {/* Format the referenceTime as a 12-hour format string before rendering */}
-                  Time Now: {currentTime(index)}
-                </div>
+                  <div>City: {container.selectedTimezone.zoneName.split('/')[1].replace('_', ' ')}</div>
+                  <div>Country: {container.selectedTimezone.countryName}</div>
+                  <div>
+                    Date Today: {formatDateTime(container.selectedTimezone.timestamp, container.selectedTimezone.gmtOffset).formattedDate}
+                  </div>
 
-              {/* Reference city (first city) allows time manipulation */}
-              {index === 0 ? (
-                <div>
-                  <span> Select Time: 
-                    <input
-                      type="time"
-                      onChange={handleTimeInputChange} // Handle time input change
-                      placeholder='insert any time(12-hour format)'
-                    /> 
-                  </span>
-                  <Clock value={containers[0].referenceTime} renderNumbers={true} />
+                  {/* Only show "Current Time" for containers other than the first one */}
+                    <div>
+                      {/* Format the referenceTime as a 12-hour format string before rendering */}
+                      Time Now: {currentTime(index)}
+                    </div>
+                  
+                  {/* Reference city (first city) allows time manipulation */}
+                  {index === 0 ? (
+                    <div>
+                      <span> Select Time: 
+                        <input
+                          type="time"
+                          onChange={handleTimeInputChange} // Handle time input change
+                          placeholder='insert any time(12-hour format)'
+                        /> 
+                      </span>
+                      <Clock value={containers[0].referenceTime} renderNumbers={true} />
+                    </div>
+        
+                  ) : (
+                    <div>
+                      <br/>
+                      {/* Render the adjusted time for other cities */}
+                      <Clock value={containers[index].referenceTime} renderNumbers={true} />
+                    </div>
+                  )}
                 </div>
               ) : (
-                <div>
-                  {/* Render the adjusted time for other cities */}
-                  <Clock value={containers[index].referenceTime} renderNumbers={true} />
-                </div>
+                <div>Set a city...</div>
               )}
             </div>
-          ) : (
-            <div>Set a city...</div>
-          )}
-        </div>
       ))}
   
       <div className='addTimezone'>
