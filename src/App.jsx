@@ -193,7 +193,7 @@ const handleCityChange = (index, newCity) => {
                     {/* Reference city (first city) allows time manipulation */}
                     {index === 0 ? (
                       <div className='clock'>
-                        <div> Select Time: 
+                        <div> Insert Time: 
                           <input
                             type="time"
                             onChange={handleTimeInputChange} // Handle time input change
