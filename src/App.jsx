@@ -210,7 +210,6 @@ const handleCityChange = (index, newCity) => {
                        
                       </div>
                       
-      
                     ) : (
                       <div className='clock'>
                         {/* Render the adjusted time for other cities */}
