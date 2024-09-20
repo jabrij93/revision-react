@@ -100,11 +100,11 @@ button:focus-visible {
   max-width: 100%; /* Prevent the clock from exceeding the container’s width */
 }
 
-.delete {
+.icons {
   position: absolute; /* Make the delete icon absolutely positioned */
   bottom: 5px; /* Push it towards the bottom */
   right: 5px; /* Push it towards the right */
   cursor: pointer; /* Add pointer cursor */
   color:gray;
-  margin-left: 5px;
+  
 }

@@ -7,6 +7,8 @@ import { TIMEZONE_API_KEY } from '../utils/config.js';  // Importing the key fro
 import './App.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon component
 import { faTrash } from '@fortawesome/free-solid-svg-icons'; // Import the trash icon
+import { faSyncAlt } from '@fortawesome/free-solid-svg-icons'; // Import refresh icon
+
 
 function App() {
   const [timezones, setTimezones] = useState([]);
@@ -215,11 +217,18 @@ const handleCityChange = (index, newCity) => {
                         {/* Render the adjusted time for other cities */}
                         <br/>
                         <Clock value={containers[index].referenceTime} renderNumbers={true} />
-                        <div className='delete'> 
-                          <FontAwesomeIcon
-                            icon={faTrash} 
-                            onClick={() => handleDeleteCity(index)} 
-                          />
+                        <div className='icons'>
+                          
+                            <FontAwesomeIcon
+                              icon={faSyncAlt}  // Clear button (refresh icon)
+                              onClick={() => handleClearCity(index)}  // Add functionality to clear the city
+                              style={{ marginRight: '8px' }}
+                            />
+                            <FontAwesomeIcon
+                              icon={faTrash} 
+                              onClick={() => handleDeleteCity(index)} 
+                            />
+                          
                         </div>
                       </div>
                     )}
