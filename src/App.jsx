@@ -76,6 +76,18 @@ function App() {
     setContainers(containers.filter((_, index) => index !== indexToDelete));
   };
 
+  const handleClearCity = (index) => {
+    const updatedContainers = [...containers];
+    updatedContainers[index] = {
+      ...updatedContainers[index],
+      city: '',  // Clear the city name
+      selectedTimezone: null,  // Reset the timezone data
+      referenceTime: new Date()  // Reset the reference time to the current time
+    };
+    setContainers(updatedContainers);  // Update the state with the cleared container
+  };
+  
+
   // Handle city change and fetch corresponding timezone data
 const handleCityChange = (index, newCity) => {
   const updatedContainers = [...containers];
