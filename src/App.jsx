@@ -68,6 +68,10 @@ function App() {
     setContainers([...containers, { city: '', selectedTimezone: null, currentTime: new Date() }]);
   };
 
+  const handleDeleteCity = (indexToDelete) => {
+    setContainers(containers.filter((_, index) => index !== indexToDelete));
+  };
+
   // Handle city change and fetch corresponding timezone data
 const handleCityChange = (index, newCity) => {
   const updatedContainers = [...containers];
@@ -201,19 +205,23 @@ const handleCityChange = (index, newCity) => {
                           /> 
                         </div>
                         <Clock value={containers[0].referenceTime} renderNumbers={true} />
+                       
                       </div>
+                      
       
                     ) : (
                       <div className='clock'>
-                        <br/>
                         {/* Render the adjusted time for other cities */}
                         <Clock value={containers[index].referenceTime} renderNumbers={true} />
+                        <button onClick={() => handleDeleteCity(index)}>Delete</button>
                       </div>
                     )}
                   </div>
                 ) : (
                   <div>Set a city...</div>
                 )}
+
+                
               </div>
         ))}
     

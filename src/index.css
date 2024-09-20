@@ -82,7 +82,7 @@ button:focus-visible {
   gap: 10px;
   border: solid;
   min-width: 200px; /* Ensures it takes full width, if necessary */
-  height: 320px; /* Set a fixed height to ensure vertical centering */
+  height: 370px; /* Set a fixed height to ensure vertical centering */
   margin: 0 auto;
   padding: 10px; 
   box-sizing: border-box;
