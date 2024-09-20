@@ -214,12 +214,12 @@ const handleCityChange = (index, newCity) => {
                     ) : (
                       <div className='clock'>
                         {/* Render the adjusted time for other cities */}
+                        <br/>
                         <Clock value={containers[index].referenceTime} renderNumbers={true} />
                         <div className='delete'> 
                           <FontAwesomeIcon
                             icon={faTrash} 
                             onClick={() => handleDeleteCity(index)} 
-                            style={{ cursor: 'pointer', color: 'red', marginLeft: '10px' }} // Add some styling
                           />
                         </div>
                       </div>

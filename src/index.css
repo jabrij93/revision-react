@@ -87,6 +87,7 @@ button:focus-visible {
   padding: 10px; 
   box-sizing: border-box;
   overflow: hidden;
+  position: relative;
 }
 
 .clock {
@@ -100,6 +101,10 @@ button:focus-visible {
 }
 
 .delete {
-  justify-content: end;
-  align-items: end;
+  position: absolute; /* Make the delete icon absolutely positioned */
+  bottom: 10px; /* Push it towards the bottom */
+  right: 10px; /* Push it towards the right */
+  cursor: pointer; /* Add pointer cursor */
+  color:gray;
+  margin-left: 10px;
 }
