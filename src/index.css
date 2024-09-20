@@ -98,3 +98,8 @@ button:focus-visible {
   width: 100%; /* Ensure the clock takes up the full width of the container */
   max-width: 100%; /* Prevent the clock from exceeding the container’s width */
 }
+
+.delete {
+  justify-content: end;
+  align-items: end;
+}

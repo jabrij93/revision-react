@@ -5,6 +5,8 @@ import axios from 'axios';
 import { formatDateTime } from '../helper.js';
 import { TIMEZONE_API_KEY } from '../utils/config.js';  // Importing the key from config.js
 import './App.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import FontAwesomeIcon component
+import { faTrash } from '@fortawesome/free-solid-svg-icons'; // Import the trash icon
 
 function App() {
   const [timezones, setTimezones] = useState([]);
@@ -213,15 +215,19 @@ const handleCityChange = (index, newCity) => {
                       <div className='clock'>
                         {/* Render the adjusted time for other cities */}
                         <Clock value={containers[index].referenceTime} renderNumbers={true} />
-                        <button onClick={() => handleDeleteCity(index)}>Delete</button>
+                        <div className='delete'> 
+                          <FontAwesomeIcon
+                            icon={faTrash} 
+                            onClick={() => handleDeleteCity(index)} 
+                            style={{ cursor: 'pointer', color: 'red', marginLeft: '10px' }} // Add some styling
+                          />
+                        </div>
                       </div>
                     )}
                   </div>
                 ) : (
                   <div>Set a city...</div>
                 )}
-
-                
               </div>
         ))}
     
