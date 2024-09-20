@@ -106,5 +106,13 @@ button:focus-visible {
   right: 5px; /* Push it towards the right */
   cursor: pointer; /* Add pointer cursor */
   color:gray;
-  
+}
+
+.addTimezone {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 370px; /* Match the height of the container */
+  margin-left: 10px;
+  color: darkgray;
 }
