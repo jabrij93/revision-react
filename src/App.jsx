@@ -18,7 +18,7 @@ function App() {
 
   useEffect(() => {
     const getAll = async () => {
-      const timezoneDB = `http://api.timezonedb.com/v2.1/list-time-zone?key=${TIMEZONE_API_KEY}&format=json`
+      const timezoneDB = `https://api.timezonedb.com/v2.1/list-time-zone?key=${TIMEZONE_API_KEY}&format=json`
       try {
         const response = await axios.get(timezoneDB);
         if (response.data?.zones?.length) {
