@@ -9,7 +9,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Import Font
 import { faTrash } from '@fortawesome/free-solid-svg-icons'; // Import the trash icon
 import { faSyncAlt } from '@fortawesome/free-solid-svg-icons'; // Import refresh icon
 
-
 function App() {
   const [timezones, setTimezones] = useState([]);
   const [city, setCity] = useState('');
