@@ -165,7 +165,7 @@ const handleCityChange = (index, newCity) => {
 
   return (
     <div>
-      <p> Time Zone App </p>
+      <h4> Timezone Web App </h4>
   
       <div className='timezone-wrapper'>
         {containers.map((container, index) => (
