@@ -141,24 +141,6 @@ const handleCityChange = (index, newCity) => {
     setContainers(updatedContainers);  // Update the state
   };
 
-  // Helper function to convert local time to the selected timezone
-  const getTimeInTimezone = (timezone, referenceTime) => {
-    if (!timezone || !referenceTime) return new Date();
-
-    // Use the Intl.DateTimeFormat API to convert the time to the desired time zone
-    const timeZoneDate = new Intl.DateTimeFormat('en-US', {
-      timeZone: timezone.zoneName, // Pass the timezone name like 'Asia/Kuala_Lumpur', 'Asia/Jakarta', etc.
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      hour12: true,
-    }).format(referenceTime);
-
-    console.log('timeZoneDate', timeZoneDate)
-
-    return timeZoneDate;
-  };
-
   {/* Format the referenceTime as a 12-hour format string before rendering */}
   const currentTime = (index) => { 
     return containers[index].referenceTime.toLocaleTimeString('en-US', {
